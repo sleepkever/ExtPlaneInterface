@@ -39,9 +39,7 @@ public class ExtPlaneTCPSender extends StoppableThread {
         this.keep_running = true;
         Thread.currentThread().setPriority(MIN_PRIORITY);
     }
-
-    @Override
-    public void run() {
+    public void runCommand(){
 
         try {
             String command = null;
@@ -51,7 +49,7 @@ public class ExtPlaneTCPSender extends StoppableThread {
             LOGGER.debug("Running Thread " + this.getName());
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             
-            while(keep_running) {
+            while(keep_running && socket.isConnected() && !socket.isClosed()) {
                 message = this.repository.getNextMessage();
                 if (message != null) {
                     command = message.getCommand();
@@ -62,7 +60,7 @@ public class ExtPlaneTCPSender extends StoppableThread {
                     
                     command = null;
                 } else {
-                    sleep(250);
+                    sleep(100);
                 }
             }
             

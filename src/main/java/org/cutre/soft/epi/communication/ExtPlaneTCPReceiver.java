@@ -51,8 +51,7 @@ public class ExtPlaneTCPReceiver extends StoppableThread {
 
     }
 
-    @Override
-    public void run() {
+    public void runCommand() {
 
         try {
 
@@ -60,8 +59,13 @@ public class ExtPlaneTCPReceiver extends StoppableThread {
             String valor = null;
             inFromServer = new BufferedReader(new InputStreamReader(
                     socket.getInputStream()));
-            while(keep_running) {
+            while(keep_running && socket.isConnected() && !socket.isClosed()) {
                 valor = inFromServer.readLine();
+                if(valor == null) {
+                    LOGGER.error("Could not read data from server");
+                    socket.close();
+                    return;
+                }
                 pool.execute(new InputHandler(this.repository, valor));
             }
             

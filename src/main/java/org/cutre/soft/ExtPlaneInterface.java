@@ -134,6 +134,10 @@ public class ExtPlaneInterface {
         this.stopReceiving();
         this.stopSending();
     }
+
+    public boolean isConnected() {
+        return !socket.isClosed() && socket.isConnected();
+    }
     
     public void observeDataRef(String dataRefName, Observer<DataRef> observer) {
         ObservableAware.getInstance().addObserver(dataRefName, observer);

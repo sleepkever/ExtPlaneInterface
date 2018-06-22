@@ -46,7 +46,7 @@ public class InputHandler implements Runnable {
 
     public void run() {
 
-        if(isDataRef(data)) {
+        if(data != null && isDataRef(data)) {
             
             DataRefFactory drf = new DataRefFactory(data);
             
@@ -58,7 +58,7 @@ public class InputHandler implements Runnable {
             
             LOGGER.debug(dataRef);
             
-        } else if(isVersion(data)) {
+        } else if(data != null && isVersion(data)) {
             LOGGER.info("Version " + data.replace("EXTPLANE ", ""));
         }
         

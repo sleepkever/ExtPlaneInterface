@@ -27,6 +27,7 @@ package org.cutre.soft.epi.communication;
 public abstract class StoppableThread extends Thread {
 
     protected volatile boolean keep_running = false;
+    protected volatile boolean isRunning = false;
 
     public void signal_stop() {
         this.keep_running = false;
@@ -39,4 +40,13 @@ public abstract class StoppableThread extends Thread {
 	public void setKeep_running(boolean keepRunning) {
 		keep_running = keepRunning;
 	}
+
+	@Override
+	public void run() {
+		isRunning = true;
+		runCommand();
+		isRunning = false;
+	}
+
+	public abstract void runCommand();
 }
